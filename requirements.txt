@@ -1,0 +1,6 @@
+oandapyV20
+python-dotenv
+pandas
+numpy
+scikit-learn
+matplotlib
