@@ -7,3 +7,5 @@ MODE = os.getenv("MODE", "live")
 TRADE_LOG_PATH = "analytics/trade_log.csv"
 OANDA_API_KEY = os.getenv("OANDA_API_KEY")
 OANDA_ACCOUNT_ID = os.getenv("OANDA_ACCOUNT_ID")
+CONFIDENCE_THRESHOLD = float(os.getenv("CONFIDENCE_THRESHOLD", "0.5"))
+

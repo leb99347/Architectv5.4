@@ -8,12 +8,13 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
+
 LOG_PATH = "logs/trade_log.jsonl"
 MODEL_PATH = "ml/trained_confidence_model.pkl"
 
 def load_trades():
     if not os.path.exists(LOG_PATH):
-        print("No trade logs found.")
+        print("❌ No trade logs found.")
         return []
     with open(LOG_PATH, "r") as f:
         return [json.loads(line) for line in f]
@@ -23,12 +24,10 @@ def extract_features_and_labels(trades):
     for trade in trades:
         tags = trade.get("tags", {})
         features = [
-            int(tags.get("ema_filter", False)),
-            int(tags.get("doji", False)),
+            int(tags.get("trend_alignment", False)),
             float(tags.get("breakout_strength", 0.0)),
             float(tags.get("multi_tap_score", 0.0)),
-            float(tags.get("volatility_score", 0.0)),
-            float(trade.get("confidence", 0.0)),
+            min(1.0, float(tags.get("atr_ratio", 1.0)) / 2.0)
         ]
         result = trade.get("result", "unknown")
         if result not in ("win", "loss"):
@@ -40,14 +39,19 @@ def extract_features_and_labels(trades):
 
 def train_and_save_model(X, y):
     if len(X) == 0:
-        print("No valid data to train.")
+        print("⚠️ No valid data to train.")
         return
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
-    model = RandomForestClassifier(n_estimators=100, max_depth=5)
+
+    model = RandomForestClassifier(
+        n_estimators=100,
+        max_depth=5,
+        class_weight='balanced'
+    )
     model.fit(X_train, y_train)
 
     y_pred = model.predict(X_test)
-    print("Classification Report:\n", classification_report(y_test, y_pred))
+    print("📊 Classification Report:\n", classification_report(y_test, y_pred))
 
     joblib.dump(model, MODEL_PATH)
     print(f"[✔] Model saved to: {MODEL_PATH}")

@@ -22,35 +22,5 @@
     "default": 1.0,
     "transform": "min(1.0, atr_ratio / 2.0)",
     "description": "Volatility normalization; signal range vs ATR"
-  },
-  "doji": {
-    "type": "bool",
-    "default": false,
-    "optional": true,
-    "description": "Presence of indecision candle at breakout"
-  },
-  "ema_filter": {
-    "type": "bool",
-    "default": false,
-    "optional": true,
-    "description": "Whether EMA trend alignment passed"
-  },
-  "volatility_score": {
-    "type": "float",
-    "default": 0.0,
-    "optional": true,
-    "description": "Normalized volatility score used in signal"
-  },
-  "pivot_zone": {
-    "type": "bool",
-    "default": false,
-    "optional": true,
-    "description": "Was breakout near a known pivot zone?"
-  },
-  "zone_tap_count": {
-    "type": "int",
-    "default": 1,
-    "optional": true,
-    "description": "Number of taps on support/resistance zone"
   }
 }

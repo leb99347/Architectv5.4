@@ -1,0 +1,55 @@
+{
+  "trend_alignment": {
+    "type": "bool",
+    "default": false,
+    "description": "Whether higher timeframe trend matches direction"
+  },
+  "breakout_strength": {
+    "type": "float",
+    "default": 0.0,
+    "range": [0.0, 1.0],
+    "description": "Strength score of breakout based on candle body vs wick"
+  },
+  "multi_tap_score": {
+    "type": "float",
+    "default": 0.0,
+    "range": [0.0, 1.0],
+    "description": "Confidence score for multiple touches on support/resistance zone"
+  },
+  "atr_ratio": {
+    "type": "float",
+    "default": 1.0,
+    "transform": "min(1.0, atr_ratio / 2.0)",
+    "description": "Volatility normalization; signal range vs ATR"
+  },
+  "doji": {
+    "type": "bool",
+    "default": false,
+    "description": "Presence of indecision candle at breakout"
+  },
+  "pivot_zone": {
+    "type": "bool",
+    "default": false,
+    "description": "Was breakout near a known pivot zone?"
+  },
+  "ema_filter": {
+    "type": "bool",
+    "default": false,
+    "description": "Whether EMA trend alignment passed"
+  },
+  "volatility_score": {
+    "type": "float",
+    "default": 0.0,
+    "description": "Normalized volatility score used in signal"
+  },
+  "session_filter": {
+    "type": "bool",
+    "default": false,
+    "description": "Session alignment passed?"
+  },
+  "atr_filter": {
+    "type": "bool",
+    "default": false,
+    "description": "ATR breakout confirmation passed?"
+  }
+}
