@@ -1,16 +1,16 @@
 # ml/train_confidence_model.py
 
-import json
 import os
+import json
 import joblib
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
-
 LOG_PATH = "logs/trade_log.jsonl"
 MODEL_PATH = "ml/trained_confidence_model.pkl"
+TARGET_VERSION = "impact_breakout_v5.4"
 
 def load_trades():
     if not os.path.exists(LOG_PATH):
@@ -22,12 +22,12 @@ def load_trades():
 def extract_features_and_labels(trades):
     X, y = [], []
     for trade in trades:
-        tags = trade.get("tags", {})
+        entry_features = trade.get("entry_features", {})
         features = [
-            int(tags.get("trend_alignment", False)),
-            float(tags.get("breakout_strength", 0.0)),
-            float(tags.get("multi_tap_score", 0.0)),
-            min(1.0, float(tags.get("atr_ratio", 1.0)) / 2.0)
+            int(entry_features.get("trend_alignment", False)),
+            float(entry_features.get("breakout_strength", 0.0)),
+            float(entry_features.get("multi_tap_score", 0.0)),
+            min(1.0, float(entry_features.get("atr_ratio", 1.0)) / 2.0)
         ]
         result = trade.get("result", "unknown")
         if result not in ("win", "loss"):

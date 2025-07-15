@@ -1,16 +1,13 @@
-def detect_zones(candles: list, lookback: int = 50, tolerance: float = 0.1) -> list:
+def detect_zones(candles):
     zones = []
-    for i in range(2, lookback - 2):
-        high = candles[i]["high"]
-        low = candles[i]["low"]
-
-        if high > candles[i - 1]["high"] and high > candles[i + 1]["high"]:
-            zones.append(round(high, 3))  # Resistance
-
-        if low < candles[i - 1]["low"] and low < candles[i + 1]["low"]:
+    for i in range(1, len(candles) - 1):
+        low = float(candles[i]["low"])
+        high = float(candles[i]["high"])
+        if low < float(candles[i - 1]["low"]) and low < float(candles[i + 1]["low"]):
             zones.append(round(low, 3))  # Support
-
-    return sorted(set(zones))
+        elif high > float(candles[i - 1]["high"]) and high > float(candles[i + 1]["high"]):
+            zones.append(round(high, 3))  # Resistance
+    return zones
 
 
 def confirm_multi_tap(candles: list, zone: float, tolerance: float = 0.1) -> float:

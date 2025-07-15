@@ -1,0 +1,72 @@
+.
+├── 0
+├── app.py
+├── audit
+│   ├── __init__.py
+│   ├── audit_engine.py
+│   ├── export_csv.py
+│   └── shadow_summary.py
+├── backtest_simulator.py
+├── config
+│   └── settings.py
+├── core
+│   ├── log_schemas.py
+│   ├── logger.py
+│   ├── logging.py
+│   ├── shadow_logger.py
+│   ├── trade_executor.py
+│   └── version_injector.py
+├── indicators
+│   ├── __init__.py
+│   ├── atr_filter.py
+│   ├── candles.py
+│   ├── doji_detector.py
+│   ├── ema_filter.py
+│   ├── news_filter.py
+│   ├── pivot_zone_detector.py
+│   ├── session_filter.py
+│   ├── test_env.py
+│   └── volatility_score.py
+├── ml
+│   ├── __init__.py
+│   ├── confidence_model_live.py
+│   ├── confidence_model.py
+│   ├── confidence_router.py
+│   ├── feature_schema_full.json
+│   ├── feature_schema.json
+│   ├── feature_utils.py
+│   ├── generate_training_data.py
+│   ├── mansa_feedback.py
+│   ├── model_comparator.py
+│   ├── model_notes.md
+│   ├── model_summary.py
+│   ├── README.md
+│   ├── test_runner.py
+│   ├── train_confidence_model.py
+│   ├── trained_confidence_model_basic.pkl
+│   ├── trained_confidence_model_full.pkl
+│   ├── trained_confidence_model.pkl
+│   ├── training_data_full.csv
+│   ├── training_data.csv
+│   ├── training_labels_full.csv
+│   └── training_labels.csv
+├── NOTES.md
+├── README.md
+├── requirements.txt
+├── signals
+│   └── signal_generator.py
+├── strategies
+│   ├── __init__.py
+│   ├── consolidation_exit.py
+│   ├── exit_strategy.py
+│   ├── liquidity_filter.py
+│   ├── max_drawdown.py
+│   ├── signal_override.py
+│   ├── time_based_exit.py
+│   └── trailing_stop.py
+├── test_env.py
+├── test_runner.py
+├── threshold
+└── tree.txt
+
+8 directories, 62 files

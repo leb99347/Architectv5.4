@@ -1,5 +1,17 @@
-.env
-.venv/
-logs/
+# Python
+*.pyc
 __pycache__/
+.venv/
+.env
+*.pkl
+
+# Logs and datasets
+logs/
+data/*.csv
 *.jsonl
+
+# VS Code
+.vscode/
+
+# OS junk
+.DS_Store

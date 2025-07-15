@@ -1,13 +1,14 @@
 # ml/generate_training_data.py
 
-import json
 import os
+import json
 import pandas as pd
 from ml.feature_utils import validate_signal
 
 LOG_PATH = "logs/trade_log.jsonl"
 OUTPUT_FEATURES = "ml/training_data.csv"
 OUTPUT_LABELS = "ml/training_labels.csv"
+TARGET_VERSION = "impact_breakout_v5.4"
 
 def extract_training_data():
     features = []
@@ -15,18 +16,23 @@ def extract_training_data():
 
     if not os.path.exists(LOG_PATH):
         print(f"❌ Log file not found: {LOG_PATH}")
-        return
+        return [], []
 
     with open(LOG_PATH, "r") as f:
         for line in f:
             trade = json.loads(line)
 
-            if "result" not in trade or "tags" not in trade:
+            # 🔒 Skip if version mismatch or data is incomplete
+            if trade.get("strategy_version") != TARGET_VERSION:
+                continue
+            if "result" not in trade or "entry_features" not in trade:
                 continue
 
-            # Score is binary: win = 1, loss = 0
+            # 🧠 Binary label
             label = 1 if trade["result"] == "win" else 0
-            signal = validate_signal(trade["tags"])
+
+            # ✅ Validate and standardize input features
+            signal = validate_signal(trade["entry_features"])
 
             features.append(signal)
             labels.append(label)
@@ -45,3 +51,5 @@ if __name__ == "__main__":
     features, labels = extract_training_data()
     if features and labels:
         save_to_csv(features, labels)
+    else:
+        print("⚠️ No valid trades found for training.")

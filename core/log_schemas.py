@@ -12,5 +12,8 @@ def format_trade_log(trade):
         "confidence": trade.get("confidence"),
         "tier": trade.get("tier"),
         "tags": trade.get("tags", {}),
-        "result": trade.get("result", "unknown")  # win/loss/breakeven
+        "result": trade.get("result", "unknown"),
+        "exit_reason": trade.get("exit_reason", "unspecified"),
+        "strategy_version": trade.get("strategy_version", "v5.4"),
+        "exit_metadata": trade.get("exit_metadata", {})  # Optional details like trailing SL, drawdown, etc.
     }
