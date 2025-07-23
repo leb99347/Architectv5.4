@@ -23,7 +23,7 @@ def is_session_active(timestamp_input) -> bool:
 
         # Localize if tz-naive, else convert to UTC
         if dt.tzinfo is None:
-            dt = dt.tz_localize(pytz.UTC)
+            dt = dt.replace(tzinfo=pytz.UTC)
         else:
             dt = dt.astimezone(pytz.UTC)
 

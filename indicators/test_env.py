@@ -31,7 +31,7 @@ def test_imports():
 def test_paths():
     print("\n📁 Checking Project Paths:")
     paths = [
-        "config/settings.py",
+        "config/__init__.py",
         "core/logging.py",
         "data/fetch_oanda.py",
         "signals/signal_generator.py",

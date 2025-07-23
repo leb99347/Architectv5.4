@@ -1,32 +1,18 @@
-# core/logger.py
-
-import os
 import json
+import os
 from datetime import datetime
-from config.settings import BOT_VERSION
-from core.log_schemas import format_trade_log
-from core.version_injector import attach_version
+from config import TRADE_LOG_PATH, VERSION, CONFIDENCE_THRESHOLD
+from core.tagger import apply_tags
+from core.log_keys import LOG_KEYS
 
-LOG_PATH = "logs/trade_log.jsonl"
-
-def log_trade(trade_data):
-    os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
-    trade_data["timestamp"] = datetime.utcnow().isoformat()
-
-    # Inject version and defaults
-    trade_data = attach_version(trade_data)
-    trade_data.setdefault("exit_reason", "unspecified")
-    trade_data.setdefault("was_news_blocked", False)
-
-    # Capture key signal metadata for traceability
-    tags = trade_data.get("tags", {})
-    trade_data["entry_features"] = {
-        "trend_alignment": tags.get("trend_alignment", False),
-        "breakout_strength": tags.get("breakout_strength", 0.0),
-        "multi_tap_score": tags.get("multi_tap_score", 0.0),
-        "atr_ratio": tags.get("atr_ratio", 1.0)
-    }
-
-    entry = format_trade_log(trade_data)
-    with open(LOG_PATH, "a") as f:
-        f.write(json.dumps(entry) + "\n")
+def log_trade(trade_data: dict):
+    try:
+        os.makedirs(os.path.dirname(TRADE_LOG_PATH), exist_ok=True)
+        trade_data["timestamp"] = datetime.utcnow().isoformat()
+        trade_data["version"] = VERSION
+        tagged_data = apply_tags(trade_data)
+        with open(TRADE_LOG_PATH, "a") as f:
+            f.write(json.dumps(tagged_data) + "\n")
+        print(f"[✅] Trade logged: {tagged_data.get('instrument')} @ {tagged_data.get('entry_price')}")
+    except Exception as e:
+        print(f"[⚠️] Trade logging failed: {e}")

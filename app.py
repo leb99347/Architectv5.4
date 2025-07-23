@@ -4,7 +4,7 @@ import os
 import logging
 from datetime import datetime
 from dotenv import load_dotenv
-
+from config import MODE, OANDA_API_KEY
 from signals.signal_generator import generate_signal
 from strategies.exit_strategy import evaluate_exit_conditions
 from ml.confidence_model_live import live_score
@@ -13,6 +13,7 @@ from core.shadow_logger import log_shadow_trade
 from core.version_injector import attach_version
 from core.logging import log_event
 from core.trade_executor import execute_trade
+
 
 # Optional: Enable this if you want VS Code logs
 logging.basicConfig(level=logging.INFO)
@@ -43,6 +44,10 @@ def main():
 
     signal["confidence"] = live_score(signal)
 
+    if signal["confidence"] is None:
+        print("❌ Skipping trade: Confidence score is missing.")
+        return
+
     # Build trade dictionary
     trade = {
         "timestamp": market_data["timestamp"],
@@ -59,7 +64,7 @@ def main():
         }
     }
 
-    # Evaluate and simulate exit (in live: you'd place order and track live PnL)
+    # Context used for exit logic
     context = {
         "atr": 0.25,
         "volume": market_data.get("volume", 1000),
@@ -67,20 +72,31 @@ def main():
         "time": market_data["timestamp"]
     }
 
-    # Dummy values for now — replace in live implementation
-    trade["stop_loss"] = trade["entry_price"] - 0.3 if trade["direction"] == "buy" else trade["entry_price"] + 0.3
+    # Dummy exit logic — replace with live tracking
+    trade["stop_loss"] = (
+        trade["entry_price"] - 0.3 if trade["direction"] == "buy"
+        else trade["entry_price"] + 0.3
+    )
+
     exit_info = evaluate_exit_conditions(trade, trade["entry_price"], context)
     trade["exit_reason"] = exit_info.get("reason", "manual_exit")
-    trade["exit_price"] = trade["entry_price"] + 0.15 if trade["direction"] == "buy" else trade["entry_price"] - 0.15
-    trade["pnl_pips"] = round((trade["exit_price"] - trade["entry_price"]) * 100, 1) if trade["direction"] == "buy" else round((trade["entry_price"] - trade["exit_price"]) * 100, 1)
+    trade["exit_price"] = (
+        trade["entry_price"] + 0.15 if trade["direction"] == "buy"
+        else trade["entry_price"] - 0.15
+    )
+    trade["pnl_pips"] = (
+        round((trade["exit_price"] - trade["entry_price"]) * 100, 1)
+        if trade["direction"] == "buy"
+        else round((trade["entry_price"] - trade["exit_price"]) * 100, 1)
+    )
     trade["duration_min"] = 30
     trade["result"] = "win" if trade["pnl_pips"] > 0 else "loss"
     trade["was_news_blocked"] = False
 
-    # Ensure version and feature tagging
+    # Attach version info and tags
     trade = attach_version(trade)
 
-    # ✅ Execute trade (logs both primary and shadow + event trail)
+    # Execute and log the trade
     execute_trade(trade)
 
 if __name__ == "__main__":

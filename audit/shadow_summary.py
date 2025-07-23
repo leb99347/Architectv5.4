@@ -1,27 +1,14 @@
-"""
-shadow_summary.py — Compares shadow strategy variant results
-"""
-
 import json
-from collections import defaultdict
 
-LOG_FILE = "logs/shadow_log.jsonl"
-
-def summarize_shadows():
-    stats = defaultdict(int)
-    try:
-        with open(LOG_FILE, "r") as f:
-            for line in f:
-                result = json.loads(line)
-                variant = result["variant"]
-                stats[variant] += 1
-    except FileNotFoundError:
-        print("No shadow logs found.")
-        return
-
-    print("📊 Shadow Strategy Summary:")
-    for variant, count in stats.items():
-        print(f" - {variant}: {count} signals evaluated")
-
-if __name__ == "__main__":
-    summarize_shadows()
+def summarize_shadow_trades(shadow_log='logs/shadow_trades_log_v4.jsonl'):
+    wins = losses = 0
+    with open(shadow_log, 'r') as f:
+        for line in f:
+            trade = json.loads(line)
+            if trade.get('result') == 'win':
+                wins += 1
+            elif trade.get('result') == 'loss':
+                losses += 1
+    total = wins + losses
+    win_rate = (wins / total * 100) if total else 0
+    print(f"Shadow Trades Summary:\nWins: {wins}, Losses: {losses}, Win Rate: {win_rate:.2f}%")

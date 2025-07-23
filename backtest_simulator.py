@@ -8,7 +8,7 @@ from core.logger import log_trade
 from core.shadow_logger import log_shadow_trade
 from core.version_injector import attach_version
 from indicators.session_filter import is_session_active
-from config.settings import CONFIDENCE_THRESHOLD  # ✅ NEW
+from config import CONFIDENCE_THRESHOLD, TRADE_LOG_PATH, SHADOW_LOG_PATH, VERSION # ✅ NEW
 
 CSV_PATH = "data/sample_gbpjpy_ohlcv.csv"
 
@@ -132,7 +132,7 @@ def simulate_trades(df):
     print(f"✅ Simulated {total_trades} trades → Wins: {win_count}, Losses: {loss_count}")
     print(f"🧼 Skipped due to low confidence: {low_conf_count}")
     print(f"🛑 Skipped due to news filter: {blocked_count}")
-    print("📦 Logs written to `logs/trade_log.jsonl` and `logs/shadow_log.jsonl`")
+    print(f"📦 Logs written to `{TRADE_LOG_PATH}` and `{SHADOW_LOG_PATH}`")
     print("⏱️", signal_time, "→ session:", is_session_active(signal_time))
 
 

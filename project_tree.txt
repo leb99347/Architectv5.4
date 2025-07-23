@@ -1,23 +1,121 @@
 .
+├── .git
+│   ├── config
+│   ├── description
+│   ├── HEAD
+│   ├── hooks
+│   │   ├── applypatch-msg.sample
+│   │   ├── commit-msg.sample
+│   │   ├── fsmonitor-watchman.sample
+│   │   ├── post-update.sample
+│   │   ├── pre-applypatch.sample
+│   │   ├── pre-commit.sample
+│   │   ├── pre-merge-commit.sample
+│   │   ├── pre-push.sample
+│   │   ├── pre-rebase.sample
+│   │   ├── pre-receive.sample
+│   │   ├── prepare-commit-msg.sample
+│   │   ├── push-to-checkout.sample
+│   │   └── update.sample
+│   ├── index
+│   ├── info
+│   │   └── exclude
+│   ├── logs
+│   │   ├── HEAD
+│   │   └── refs
+│   ├── objects
+│   │   ├── info
+│   │   └── pack
+│   ├── packed-refs
+│   └── refs
+│       ├── heads
+│       ├── remotes
+│       └── tags
+├── .gitignore
+├── .venv
+│   ├── bin
+│   │   ├── activate
+│   │   ├── activate.csh
+│   │   ├── activate.fish
+│   │   ├── Activate.ps1
+│   │   ├── dotenv
+│   │   ├── f2py
+│   │   ├── fonttools
+│   │   ├── numpy-config
+│   │   ├── pip
+│   │   ├── pip3
+│   │   ├── pip3.11
+│   │   ├── pyftmerge
+│   │   ├── pyftsubset
+│   │   ├── python -> python3.11
+│   │   ├── python3 -> python3.11
+│   │   ├── python3.11 -> /opt/homebrew/opt/python@3.11/bin/python3.11
+│   │   └── ttx
+│   ├── bin 2
+│   ├── include
+│   │   └── python3.11
+│   ├── lib
+│   │   └── python3.11
+│   ├── lib 2
+│   ├── pyvenv.cfg
+│   └── share
+│       └── man
+├── .vscode
+│   └── settings.json
 ├── 0
 ├── app.py
 ├── audit
 │   ├── __init__.py
 │   ├── audit_engine.py
 │   ├── export_csv.py
+│   ├── log_exporter.py
+│   ├── schema_tools
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── log_schemas.py
+│   │   ├── schema_checker.py
+│   │   ├── schema_repair.py
+│   │   └── schema_validator.py
 │   └── shadow_summary.py
 ├── backtest_simulator.py
 ├── config
+│   ├── __pycache__
+│   │   └── settings.cpython-311.pyc
+│   ├── config.py
 │   └── settings.py
 ├── core
+│   ├── __pycache__
+│   │   ├── log_schemas.cpython-311.pyc
+│   │   ├── logger.cpython-311.pyc
+│   │   ├── logging.cpython-311.pyc
+│   │   ├── shadow_logger.cpython-311.pyc
+│   │   ├── trade_executor.cpython-311.pyc
+│   │   └── version_injector.cpython-311.pyc
+│   ├── log_event.py
+│   ├── log_keys.py
 │   ├── log_schemas.py
 │   ├── logger.py
 │   ├── logging.py
 │   ├── shadow_logger.py
+│   ├── tagger.py
 │   ├── trade_executor.py
 │   └── version_injector.py
+├── data
+│   ├── fetch_oanda.py
+│   ├── news_events.json
+│   └── sample_gbpjpy_ohlcv.csv
+├── DevBluPrnt71525.md
 ├── indicators
 │   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-311.pyc
+│   │   ├── atr_filter.cpython-311.pyc
+│   │   ├── candles.cpython-311.pyc
+│   │   ├── doji_detector.cpython-311.pyc
+│   │   ├── ema_filter.cpython-311.pyc
+│   │   ├── news_filter.cpython-311.pyc
+│   │   ├── pivot_zone_detector.cpython-311.pyc
+│   │   └── session_filter.cpython-311.pyc
 │   ├── atr_filter.py
 │   ├── candles.py
 │   ├── doji_detector.py
@@ -27,8 +125,18 @@
 │   ├── session_filter.py
 │   ├── test_env.py
 │   └── volatility_score.py
+├── logs
+│   ├── shadow_log.jsonl
+│   ├── trade_executor_executed.jsonl
+│   └── trade_log.jsonl
 ├── ml
 │   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-311.pyc
+│   │   ├── confidence_model_live.cpython-311.pyc
+│   │   ├── confidence_model.cpython-311.pyc
+│   │   ├── confidence_router.cpython-311.pyc
+│   │   └── feature_utils.cpython-311.pyc
 │   ├── confidence_model_live.py
 │   ├── confidence_model.py
 │   ├── confidence_router.py
@@ -43,8 +151,6 @@
 │   ├── README.md
 │   ├── test_runner.py
 │   ├── train_confidence_model.py
-│   ├── trained_confidence_model_basic.pkl
-│   ├── trained_confidence_model_full.pkl
 │   ├── trained_confidence_model.pkl
 │   ├── training_data_full.csv
 │   ├── training_data.csv
@@ -55,9 +161,20 @@
 ├── README.md
 ├── requirements.txt
 ├── signals
+│   ├── __pycache__
+│   │   └── signal_generator.cpython-311.pyc
 │   └── signal_generator.py
 ├── strategies
 │   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-311.pyc
+│   │   ├── consolidation_exit.cpython-311.pyc
+│   │   ├── exit_strategy.cpython-311.pyc
+│   │   ├── liquidity_filter.cpython-311.pyc
+│   │   ├── max_drawdown.cpython-311.pyc
+│   │   ├── signal_override.cpython-311.pyc
+│   │   ├── time_based_exit.cpython-311.pyc
+│   │   └── trailing_stop.cpython-311.pyc
 │   ├── consolidation_exit.py
 │   ├── exit_strategy.py
 │   ├── liquidity_filter.py
@@ -68,6 +185,33 @@
 ├── test_env.py
 ├── test_runner.py
 ├── threshold
-└── tree.txt
+├── tree.txt
+└── venv
+    ├── .gitignore
+    ├── bin
+    │   ├── activate
+    │   ├── activate.csh
+    │   ├── activate.fish
+    │   ├── Activate.ps1
+    │   ├── dotenv
+    │   ├── f2py
+    │   ├── fonttools
+    │   ├── numpy-config
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.13
+    │   ├── pyftmerge
+    │   ├── pyftsubset
+    │   ├── python -> python3.13
+    │   ├── python3 -> python3.13
+    │   ├── python3.13 -> /opt/homebrew/opt/python@3.13/bin/python3.13
+    │   └── ttx
+    ├── include
+    │   └── python3.13
+    ├── lib
+    │   └── python3.13
+    ├── pyvenv.cfg
+    └── share
+        └── man
 
-8 directories, 63 files
+49 directories, 166 files

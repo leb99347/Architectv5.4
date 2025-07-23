@@ -1,5 +1,6 @@
 # ml/confidence_router.py
 
+import os
 import joblib
 from ml.feature_utils import validate_signal
 
@@ -9,9 +10,16 @@ MODEL_PATHS = {
 }
 
 # 🔁 Load models into memory at startup
+def safe_load_model(path):
+    if os.path.exists(path):
+        return joblib.load(path)
+    else:
+        print(f"[⚠] Model not found: {path} — falling back to rule-based scoring.")
+        return None
+
 MODELS = {
-    model_id: joblib.load(path)
-    for model_id, path in MODEL_PATHS.items()
+    "f10": safe_load_model("ml/models/trained_confidence_model_f10.pkl"),
+    "basic": safe_load_model("ml/trained_confidence_model_basic.pkl")
 }
 
 def score_signal(signal_dict, model_id="4f"):

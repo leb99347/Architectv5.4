@@ -1,17 +1,30 @@
-"""
-audit_engine.py — Reviews trade logs and summarizes outcomes
-"""
+import argparse
+from schema_tools.schema_validator import validate_all_logs
+from schema_tools.schema_checker import check_integrity
+from schema_tools.schema_repair import repair_logs
+from shadow_summary import summarize_shadow_trades
+from log_exporter import export_all_to_csv
 
-import json
+def main():
+    parser = argparse.ArgumentParser(description="Audit Engine CLI")
+    parser.add_argument("--validate", action="store_true", help="Validate log files against schema")
+    parser.add_argument("--check", action="store_true", help="Check log integrity")
+    parser.add_argument("--repair", action="store_true", help="Attempt auto-repair logs")
+    parser.add_argument("--summary", action="store_true", help="Summarize shadow vs live trades")
+    parser.add_argument("--export", action="store_true", help="Export logs to CSV")
 
-TRADE_LOG = "logs/trades_executed.jsonl"
+    args = parser.parse_args()
 
-def summarize_trades():
-    trades = []
-    with open(TRADE_LOG, "r") as f:
-        for line in f:
-            trades.append(json.loads(line))
+    if args.validate:
+        validate_all_logs()
+    if args.check:
+        check_integrity()
+    if args.repair:
+        repair_logs()
+    if args.summary:
+        summarize_shadow_trades()
+    if args.export:
+        export_all_to_csv()
 
-    print(f"🔎 Total Trades Logged: {len(trades)}")
-    for trade in trades[-5:]:
-        print(f"- {trade['timestamp']} | {trade['direction']} | {trade['entry_price']} | {trade['mode']}")
+if __name__ == "__main__":
+    main()

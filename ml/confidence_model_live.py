@@ -1,4 +1,5 @@
 """
+confidence_model_live.py
 Live confidence model loader and fallback scorer.
 Used in production signal routing.
 """
@@ -9,7 +10,14 @@ import logging
 import numpy as np
 from ml.confidence_model import rule_based_score as fallback_score
 
-MODEL_PATH = "ml/trained_confidence_model.pkl"
+logging.basicConfig(level=logging.INFO)
+
+PREFERRED_MODEL = os.getenv("CONFIDENCE_MODEL_VERSION", "f4")
+MODEL_PATH = os.path.join(
+    os.path.dirname(__file__),
+    "models",
+    f"trained_confidence_model_{PREFERRED_MODEL}.pkl"
+)
 
 def live_score(signal_dict):
     """
@@ -44,7 +52,11 @@ def extract_features(signal):
         float(signal.get("multi_tap_score", 0.0)),
         min(1.0, float(signal.get("atr_ratio", 1.0)) / 2.0)
     ]
+
 def extract_extended_features(signal):
+    """
+    Extracts extended 10-feature vector for F10 model.
+    """
     return [
         int(signal.get("trend_alignment", False)),           # 1
         float(signal.get("breakout_strength", 0.0)),         # 2
@@ -54,12 +66,10 @@ def extract_extended_features(signal):
         int(signal.get("pivot_zone", False)),                # 6
         int(signal.get("ema_filter", False)),                # 7
         float(signal.get("volatility_score", 0.0)),          # 8
-        int(signal.get("session_filter", False)),            # 9 ✅
-        int(signal.get("atr_filter", False))                 # 10 ✅
+        int(signal.get("session_filter", False)),            # 9
+        int(signal.get("atr_filter", False))                 # 10
     ]
 
-
-# ✅ Optional test block
 if __name__ == "__main__":
     test_signal = {
         "trend_alignment": True,

@@ -4,6 +4,7 @@ from core.logger import log_trade
 from core.shadow_logger import log_shadow_trade
 from core.logging import log_event
 from core.version_injector import attach_version  # centralized version injection
+from config import TRADE_LOG_PATH, VERSION, CONFIDENCE_THRESHOLD, SHADOW_LOG_PATH  # or SHADOW_LOG_PATH
 
 def execute_trade(trade_data: dict):
     """
@@ -21,3 +22,20 @@ def execute_trade(trade_data: dict):
 
     # 🧾 Record execution event
     log_event("trade_executor", "executed", trade_data)
+
+    # test_trade_executor.py
+from core.trade_executor import execute_trade
+
+test_trade = {
+    "instrument": "GBP_JPY",
+    "action": "buy",
+    "confidence": 0.93,
+    "tier": "high",
+    "tags": {
+        "reason": "debug test",
+        "session": "london"
+    },
+    "timestamp": "2024-01-10T08:00:00Z"
+}
+
+execute_trade(test_trade)

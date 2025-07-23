@@ -1,7 +1,7 @@
 # core/version_injector.py
 
 try:
-    from config.settings import BOT_VERSION
+    from config import VERSION as BOT_VERSION
 except ImportError:
     BOT_VERSION = "unknown"
 

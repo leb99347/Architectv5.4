@@ -35,18 +35,23 @@ for module_path in ML_MODULES:
 # --------------------------------------
 # STEP 2 — Load and Validate Trained Model
 # --------------------------------------
-MODEL_PATH = "ml/trained_confidence_model.pkl"
-print(f"\n📂 Checking model file: {MODEL_PATH}")
-if os.path.exists(MODEL_PATH):
-    try:
-        model = joblib.load(MODEL_PATH)
-        print("✅ Model loaded successfully.")
-    except Exception:
-        print("❌ Failed to load model:")
-        traceback.print_exc()
-else:
-    print("❌ Model file not found.")
-print("-" * 50)
+MODEL_PATHS = [
+    "ml/models/trained_confidence_model_f4.pkl",
+    "ml/models/trained_confidence_model_f10.pkl"
+]
+
+for path in MODEL_PATHS:
+    print(f"\n📂 Checking model file: {path}")
+    if os.path.exists(path):
+        try:
+            model = joblib.load(path)
+            print("✅ Model loaded successfully.")
+        except Exception:
+            print("❌ Failed to load model:")
+            traceback.print_exc()
+    else:
+        print("❌ Model file not found.")
+
 
 
 # ----------------------------------------
